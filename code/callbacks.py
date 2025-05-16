@@ -6,6 +6,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import numpy as np
 from layout import home_page, dashboard_page, LINK_STYLE, ACTIVE_STYLE
+import urllib.parse
 
 
 @app.callback(
@@ -151,3 +152,40 @@ def update_nav_styles(pathname):
         dashboard_style.update(ACTIVE_STYLE)
 
     return home_style, dashboard_style
+
+
+
+
+@app.callback(
+    Output('export-email', 'href'),
+    Input('session-history', 'data'),
+    Input('unit-selector', 'value')
+)
+def make_mailto(history, units):
+    if not history:
+        return ''  # no data → no link
+
+    # Build a simple ASCII table
+    # Header
+    header = ["Weight", "Predicted Height", "Time"]
+    lines = ["\t".join(header)]
+    # Rows
+    for r in history:
+        # convert units the same way your table does
+        w, h = convert_units(
+            r['input_weight_metric'],
+            r['predicted_height_m'],
+            to=units
+        )
+        w_str = f"{w:.1f} {'kg' if units=='metric' else 'lbs'}"
+        h_str = f"{h:.2f} {'m'  if units=='metric' else 'ft'}"
+        lines.append("\t".join([w_str, h_str, r['datetime']]))
+    body = "\n".join(lines)
+
+    subject = "Your Recent Height Predictions"
+    # URL-encode both subject and body
+    mailto = (
+        f"mailto:?subject={urllib.parse.quote(subject)}"
+        f"&body={urllib.parse.quote(body)}"
+    )
+    return mailto

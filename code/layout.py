@@ -66,6 +66,7 @@ home_page = html.Div([
 
 # --- Main Dashboard Page ---
 dashboard_page = html.Div([
+
     html.H2("Height vs Weight Predictor", style={'marginBottom': '20px'}),
 
     dcc.Dropdown(
@@ -154,7 +155,33 @@ dashboard_page = html.Div([
             'width': 'fit-content',
             'marginBottom': '20px'
         }
+    ),
+
+    # Export via email button
+    html.A(
+        html.Button(
+            "📧 Email My History",
+            style={
+                'padding': '10px 16px',
+                'fontSize': '14px',
+                'backgroundColor': 'white',
+                'color': '#0074D9',
+                'border': '2px solid #0074D9',
+                'borderRadius': '4px',
+                'cursor': 'pointer'
+            }
+        ),
+        id='export-email',
+        href='',          # populated by callback
+        target='_blank',
+        style={
+            'position': 'fixed',
+            'bottom': '20px',
+            'right': '20px',
+            'zIndex': 1000
+        }
     )
+
 ], style={
     'fontFamily': 'Arial, sans-serif',
     'maxWidth': '1200px',
@@ -166,12 +193,10 @@ dashboard_page = html.Div([
 layout = html.Div([
     dcc.Location(id='url', refresh=False),
 
-    # Navbar without `active_style`
     html.Nav([
-        dcc.Link('Home',       href='/',           id='home-link',      style=LINK_STYLE),
-        dcc.Link('Dashboard',  href='/dashboard',  id='dashboard-link', style=LINK_STYLE)
+        dcc.Link('Home',      href='/',           id='home-link',      style=LINK_STYLE),
+        dcc.Link('Dashboard', href='/dashboard',  id='dashboard-link', style=LINK_STYLE)
     ], style=NAV_STYLE),
 
-    # Page content will be injected here via a callback
     html.Div(id='page-content')
 ])
