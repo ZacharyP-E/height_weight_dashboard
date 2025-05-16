@@ -10,14 +10,24 @@ NAV_STYLE = {
     'padding': '10px',
     'alignItems': 'center'
 }
+
+# white buttons with blue text
 LINK_STYLE = {
-    'color': 'white',
-    'marginRight': '20px',
+    'backgroundColor': 'white',
+    'color': '#0074D9',
+    'marginRight': '10px',
+    'padding': '8px 16px',
+    'borderRadius': '4px',
     'textDecoration': 'none',
-    'fontWeight': 'bold'
+    'fontWeight': 'bold',
+    'transition': 'all 0.2s ease'
 }
+
+# active link: slightly larger & bolder
 ACTIVE_STYLE = {
-    'textDecoration': 'underline'
+    'fontSize': '18px',
+    'padding': '10px 18px',
+    'boxShadow': '0 2px 6px rgba(0,0,0,0.2)'
 }
 
 # --- Title / Instruction Page ---
