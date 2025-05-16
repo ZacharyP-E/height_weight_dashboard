@@ -5,6 +5,8 @@ from utils import convert_units, log_prediction, format_table_data
 from datetime import datetime
 import plotly.graph_objects as go
 import numpy as np
+from layout import home_page, dashboard_page, LINK_STYLE, ACTIVE_STYLE
+
 
 @app.callback(
     Output('weight-label', 'children'),
@@ -123,3 +125,29 @@ def update_table(units, history):
     if not history:
         return []
     return format_table_data(history, units)
+
+
+@app.callback(
+    Output('page-content', 'children'),
+    Input('url', 'pathname')
+)
+def display_page(pathname):
+    if pathname == '/dashboard':
+        return dashboard_page
+    return home_page
+
+@app.callback(
+    [Output('home-link',      'style'),
+     Output('dashboard-link', 'style')],
+    Input('url', 'pathname')
+)
+def update_nav_styles(pathname):
+    home_style      = LINK_STYLE.copy()
+    dashboard_style = LINK_STYLE.copy()
+
+    if pathname in ['/', '']:
+        home_style.update(ACTIVE_STYLE)
+    elif pathname == '/dashboard':
+        dashboard_style.update(ACTIVE_STYLE)
+
+    return home_style, dashboard_style
