@@ -2,7 +2,7 @@
 
 A Dash app that predicts height from weight using linear regression, with metric/imperial units, interactive plot, and history table.
 
-.
+```
 ├── app_instance.py # creates Dash app
 ├── layout.py # defines pages & navbar
 ├── callbacks.py # registers callbacks
@@ -12,8 +12,9 @@ A Dash app that predicts height from weight using linear regression, with metric
 ├── data/
 │ └── height_weight.csv # dataset
 └── README.md # you are here
+```
 
-Always show details
+
 
 
 ## Setup
