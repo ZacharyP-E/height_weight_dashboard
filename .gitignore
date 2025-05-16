@@ -172,3 +172,54 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Data files
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.xlsm
+*.xlsb
+*.ods
+*.parquet
+*.feather
+*.orc
+*.h5
+*.hdf5
+*.json
+*.xml
+*.yaml
+*.yml
+*.pkl
+*.pickle
+*.sav
+*.dta
+*.rds
+*.rdata
+*.sas7bdat
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# Large file types (optional, depending on project)
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+
+# Geo data
+*.shp
+*.shx
+*.dbf
+*.prj
+*.geojson
+*.kml
+*.gml
+*.gpkg
+
+# Log files
+*.log
