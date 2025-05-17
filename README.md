@@ -23,9 +23,8 @@ Features metric/imperial units, an interactive plot, session‐based history wit
 
 ```bash
 python run.py
-```
-
 Open http://127.0.0.1:8050/ in your browser.
+```
 
 ## Usage
 
@@ -50,35 +49,3 @@ Open http://127.0.0.1:8050/ in your browser.
 
 data/height_weight.csv — training dataset
 data/prediction_log.csv — appended user predictions
-
-
-
-## Deployment Options
-
-https://community.plotly.com/t/how-to-deploy-dash-app-internally-in-local-network/61312
-
-
-
-https://community.plotly.com/t/deploy-on-internal-server-without-git-and-docker/68574
-
-
-
-https://www.reddit.com/r/databricks/comments/1fqkdvt/can_you_deploy_a_web_app_in_databricks/
-
-
-
-https://github.com/nickjj/docker-flask-example
-
-
-
-## Authenticaiton
-
-https://www.reddit.com/r/flask/comments/1kmmfdf/seeking_guidance_on_enterpriselevel_auth_in_flask/
-
-
-
-https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login
-
-
-
-https://pypi.org/project/Flask-Login/
