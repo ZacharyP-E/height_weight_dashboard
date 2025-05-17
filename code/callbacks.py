@@ -5,7 +5,7 @@ from utils import convert_units, log_prediction, format_table_data
 from datetime import datetime
 import plotly.graph_objects as go
 import numpy as np
-from layout import home_page, dashboard_page, LINK_STYLE, ACTIVE_STYLE
+from layout import home_page, dashboard_page, analytics_page, LINK_STYLE, ACTIVE_STYLE
 import urllib.parse
 
 
@@ -13,6 +13,7 @@ import urllib.parse
     Output('weight-label', 'children'),
     Input('unit-selector', 'value')
 )
+
 def update_weight_label(units):
     return f"Enter your weight ({'kg' if units=='metric' else 'lbs'}):"
 
@@ -135,23 +136,35 @@ def update_table(units, history):
 def display_page(pathname):
     if pathname == '/dashboard':
         return dashboard_page
-    return home_page
+    elif pathname == '/analytics':
+        return analytics_page
+    else:
+        return home_page
 
 @app.callback(
-    [Output('home-link',      'style'),
-     Output('dashboard-link', 'style')],
+    [
+        Output('home-link',      'style'),
+        Output('dashboard-link', 'style'),
+        Output('analytics-link', 'style')    # ← add this
+    ],
     Input('url', 'pathname')
 )
 def update_nav_styles(pathname):
+    # start with all links at the base style
     home_style      = LINK_STYLE.copy()
     dashboard_style = LINK_STYLE.copy()
+    analytics_style = LINK_STYLE.copy()
 
-    if pathname in ['/', '']:
-        home_style.update(ACTIVE_STYLE)
-    elif pathname == '/dashboard':
+    # apply ACTIVE_STYLE to whichever pathname is current
+    if pathname == '/dashboard':
         dashboard_style.update(ACTIVE_STYLE)
+    elif pathname == '/analytics':
+        analytics_style.update(ACTIVE_STYLE)
+    else:
+        # default (including '/')
+        home_style.update(ACTIVE_STYLE)
 
-    return home_style, dashboard_style
+    return home_style, dashboard_style, analytics_style
 
 
 
