@@ -2,10 +2,9 @@
 
 from dash import html, dcc
 import dash.dash_table
-import plotly.express as px
 import plotly.graph_objects as go
-from data_model import df  # your DataFrame loaded in data_mode.py
 import numpy as np
+from data_model import df  # your DataFrame loaded in data_model.py
 
 # --- Navbar styles ---
 NAV_STYLE = {
@@ -83,6 +82,8 @@ dashboard_page = html.Div([
         ],
         value='metric',
         clearable=False,
+        persistence=True,
+        persistence_type='session',
         style={'width': '250px', 'marginBottom': '20px'}
     ),
 
@@ -185,83 +186,19 @@ h = df['Height (m)']
 mean_w, med_w, std_w = w.mean(), w.median(), w.std()
 mean_h, med_h, std_h = h.mean(), h.median(), h.std()
 
-# --- Weight histogram bins & colors ---
-counts_w, bins_w = np.histogram(w, bins=30)
-centers_w = (bins_w[:-1] + bins_w[1:]) / 2
-
-colors_w = []
-for x in centers_w:
-    d = abs(x - mean_w)
-    if d <= std_w:
-        colors_w.append('rgba(0,128,0,0.6)')    # ±1σ
-    elif d <= 2*std_w:
-        colors_w.append('rgba(0,128,0,0.3)')    # ±2σ
-    else:
-        colors_w.append('lightgrey')            # beyond
-
-hist_w = go.Figure()
-hist_w.add_trace(go.Bar(
-    x=centers_w, y=counts_w,
-    marker_color=colors_w,
-    name='Weight'
-))
-hist_w.add_vline(x=mean_w, line=dict(color='red', dash='dash'),
-                 annotation_text='Mean', annotation_position='top right')
-hist_w.add_vline(x=med_w,  line=dict(color='blue', dash='dot'),
-                 annotation_text='Median', annotation_position='top left')
-hist_w.update_layout(
-    title='Weight Distribution',
-    xaxis_title='Weight (kg)',
-    yaxis_title='Count',
-    font_family='Arial, sans-serif'
-)
-
-# --- Height histogram bins & red shading for σ-bands ---
-counts_h, bins_h = np.histogram(h, bins=30)
-centers_h = (bins_h[:-1] + bins_h[1:]) / 2
-
-colors_h = []
-for x in centers_h:
-    d = abs(x - mean_h)
-    if d <= std_h:
-        # within ±1σ → darker red
-        colors_h.append('rgba(255, 0, 0, 0.6)')
-    elif d <= 2*std_h:
-        # between 1σ and 2σ → lighter red
-        colors_h.append('rgba(255, 0, 0, 0.3)')
-    else:
-        # beyond 2σ → grey
-        colors_h.append('lightgrey')
-
-hist_h = go.Figure()
-hist_h.add_trace(go.Bar(
-    x=centers_h,
-    y=counts_h,
-    marker_color=colors_h,
-    name='Height'
-))
-hist_h.add_vline(x=mean_h,
-                 line=dict(color='red', dash='dash'),
-                 annotation_text='Mean',
-                 annotation_position='top right')
-hist_h.add_vline(x=med_h,
-                 line=dict(color='blue', dash='dot'),
-                 annotation_text='Median',
-                 annotation_position='top left')
-hist_h.update_layout(
-    title='Height Distribution',
-    xaxis_title='Height (m)',
-    yaxis_title='Count',
-    font_family='Arial, sans-serif'
-)
-
-
+# --- Analytics Page ---
 analytics_page = html.Div([
-    html.H2("Data Distributions", style={'marginBottom': '20px'}),
+    html.H2('Data Distributions', style={'marginBottom': '20px'}),
     html.Div([
-        html.Div(dcc.Graph(figure=hist_w), style={'flex': '1', 'paddingRight': '10px'}),
-        html.Div(dcc.Graph(figure=hist_h), style={'flex': '1', 'paddingLeft': '10px'})
-    ], style={'display': 'flex', 'alignItems': 'flex-start'})
+        html.Div(
+            dcc.Graph(id='weight-histogram'),
+            style={'flex': '1', 'paddingRight': '10px'}
+        ),
+        html.Div(
+            dcc.Graph(id='height-histogram'),
+            style={'flex': '1', 'paddingLeft': '10px'}
+        )
+    ], style={'display': 'flex', 'alignItems': 'flex-start'}),
 ], style={
     'fontFamily': 'Arial, sans-serif',
     'maxWidth': '1200px',
@@ -273,6 +210,9 @@ analytics_page = html.Div([
 layout = html.Div([
     dcc.Location(id='url', refresh=False),
 
+    # persist the current unit selection across pages
+    dcc.Store(id='unit-store', data='metric'),
+    
     html.Nav([
         dcc.Link('Home',      href='/',           id='home-link',      style=LINK_STYLE),
         dcc.Link('Dashboard', href='/dashboard',  id='dashboard-link', style=LINK_STYLE),
