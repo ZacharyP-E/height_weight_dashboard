@@ -34,23 +34,27 @@ ACTIVE_STYLE = {
 home_page = html.Div([
     html.H1("Height vs Weight Predictor", style={'marginBottom': '10px'}),
     html.P(
-        "Welcome! This tool uses a simple linear regression to predict your height "
-        "given your weight. Choose your preferred units, enter your weight, and "
-        "view both the scatter plot & your personalized prediction.",
+        "Predict your height from your weight using a linear regression model. "
+        "Switch between metric and imperial units, make interactive predictions, "
+        "and keep track of your last five guesses.",
         style={'maxWidth': '600px', 'lineHeight': '1.5', 'margin': '0 auto'}
     ),
-    html.H4("How to use this tool:", style={'marginTop': '30px'}),
+
+    html.H4("Key Features:", style={'marginTop': '30px'}),
     html.Ul([
-        html.Li("Click Dashboard above or the button below."),
-        html.Li("Select Metric or Imperial units."),
-        html.Li("Enter your weight and click Predict Height."),
-        html.Li("See your point on the regression plot and review recent predictions.")
+        html.Li([ html.Strong("Unit Selector:"), " Toggle between kg/m and lbs/ft." ]),
+        html.Li([ html.Strong("Interactive Plot:"), " See your point on the regression line." ]),
+        html.Li([ html.Strong("History Table:"), " Review your last five predictions." ]),
+        html.Li([ html.Strong("Row Selection:"), " Check boxes to pick any entries." ]),
+        html.Li([ html.Strong("Email Export:"), " Send all or only selected rows via your mail client." ]),
+        html.Li([ html.Strong("Multi-Page Layout:"), " Navigate between Home and Dashboard easily." ])
     ], style={'maxWidth': '600px', 'margin': '0 auto', 'textAlign': 'left'}),
+
     dcc.Link(
         html.Button(
             "Go to Dashboard",
             style={
-                'padding': '10px 20px',
+                'padding': '12px 24px',
                 'fontSize': '16px',
                 'marginTop': '20px',
                 'backgroundColor': '#0074D9',
