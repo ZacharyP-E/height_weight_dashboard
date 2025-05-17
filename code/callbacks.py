@@ -158,34 +158,42 @@ def update_nav_styles(pathname):
 
 @app.callback(
     Output('export-email', 'href'),
-    Input('session-history', 'data'),
-    Input('unit-selector', 'value')
+    [
+        Input('history-table', 'data'),
+        Input('history-table', 'selected_rows'),
+        Input('export-option', 'value')
+    ]
 )
-def make_mailto(history, units):
-    if not history:
-        return ''  # no data → no link
 
-    # Build a simple ASCII table
-    # Header
+
+def make_mailto(table_data, selected_rows, export_option):
+    # nothing to send?
+    if not table_data:
+        return ''
+
+    # pick which rows
+    if export_option == 'selected':
+        # if no rows are checked, don't make a link
+        if not selected_rows:
+            return ''
+        rows = [table_data[i] for i in selected_rows]
+    else:
+        rows = table_data
+
+    # build a simple tab-delimited payload
     header = ["Weight", "Predicted Height", "Time"]
     lines = ["\t".join(header)]
-    # Rows
-    for r in history:
-        # convert units the same way your table does
-        w, h = convert_units(
-            r['input_weight_metric'],
-            r['predicted_height_m'],
-            to=units
-        )
-        w_str = f"{w:.1f} {'kg' if units=='metric' else 'lbs'}"
-        h_str = f"{h:.2f} {'m'  if units=='metric' else 'ft'}"
-        lines.append("\t".join([w_str, h_str, r['datetime']]))
+    for r in rows:
+        lines.append("\t".join([
+            r['input_weight'],
+            r['predicted_height'],
+            r['datetime']
+        ]))
     body = "\n".join(lines)
 
-    subject = "Your Recent Height Predictions"
-    # URL-encode both subject and body
-    mailto = (
+    subject = "Your Height Predictions"
+    href = (
         f"mailto:?subject={urllib.parse.quote(subject)}"
         f"&body={urllib.parse.quote(body)}"
     )
-    return mailto
+    return href

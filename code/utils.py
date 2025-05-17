@@ -29,6 +29,7 @@ def format_table_data(history, units):
                              r['predicted_height_m'],
                              to=units)
         rows.append({
+            'selected':          False,
             'input_weight':      f"{w:.1f} {'kg' if units=='metric' else 'lbs'}",
             'predicted_height': f"{h:.2f} {'m'  if units=='metric' else 'ft'}",
             'datetime':          r['datetime']

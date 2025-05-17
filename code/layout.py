@@ -72,7 +72,7 @@ dashboard_page = html.Div([
     dcc.Dropdown(
         id='unit-selector',
         options=[
-            {'label': 'Metric (kg, m)',     'value': 'metric'},
+            {'label': 'Metric (kg, m)',   'value': 'metric'},
             {'label': 'Imperial (lbs, ft)', 'value': 'imperial'}
         ],
         value='metric',
@@ -91,15 +91,31 @@ dashboard_page = html.Div([
             dash.dash_table.DataTable(
                 id='history-table',
                 columns=[
-                    {'name': 'Weight',            'id': 'input_weight'},
-                    {'name': 'Predicted Height',  'id': 'predicted_height'},
-                    {'name': 'Time',              'id': 'datetime'}
+                    {'name': 'Weight',           'id': 'input_weight'},
+                    {'name': 'Predicted Height', 'id': 'predicted_height'},
+                    {'name': 'Time',             'id': 'datetime'}
                 ],
+                data=[],                  # populated via callback
+                row_selectable='multi',   # adds a checkbox column
+                selected_rows=[],         # default no rows selected
                 style_table={'overflowX': 'auto'},
                 style_cell={'textAlign': 'center', 'padding': '8px'},
                 style_header={'fontWeight': 'bold', 'backgroundColor': '#f1f1f1'},
                 page_action='none'
-            )
+            ),
+
+            # Export scope selector
+            dcc.RadioItems(
+                id='export-option',
+                options=[
+                    {'label': 'All',      'value': 'all'},
+                    {'label': 'Selected', 'value': 'selected'}
+                ],
+                value='all',
+                inline=True,
+                style={'marginTop': '10px'}
+            ),
+
         ], style={
             'flex': '1',
             'marginLeft': '20px',
