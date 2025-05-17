@@ -62,7 +62,11 @@ home_page = html.Div([
         ),
         href='/dashboard'
     )
-], style={'textAlign': 'center', 'padding': '50px'})
+], style={
+    'fontFamily': 'Arial, sans-serif',
+    'textAlign': 'center',
+    'padding': '50px'
+})
 
 # --- Main Dashboard Page ---
 dashboard_page = html.Div([
@@ -72,7 +76,7 @@ dashboard_page = html.Div([
     dcc.Dropdown(
         id='unit-selector',
         options=[
-            {'label': 'Metric (kg, m)',   'value': 'metric'},
+            {'label': 'Metric (kg, m)',     'value': 'metric'},
             {'label': 'Imperial (lbs, ft)', 'value': 'imperial'}
         ],
         value='metric',
@@ -86,6 +90,7 @@ dashboard_page = html.Div([
             dcc.Graph(id='scatter-plot'),
             style={'flex': '2'}
         ),
+
         html.Div([
             html.H4("Your Recent Predictions", style={'marginBottom': '10px'}),
             dash.dash_table.DataTable(
@@ -95,12 +100,23 @@ dashboard_page = html.Div([
                     {'name': 'Predicted Height', 'id': 'predicted_height'},
                     {'name': 'Time',             'id': 'datetime'}
                 ],
-                data=[],                  # populated via callback
-                row_selectable='multi',   # adds a checkbox column
-                selected_rows=[],         # default no rows selected
-                style_table={'overflowX': 'auto'},
-                style_cell={'textAlign': 'center', 'padding': '8px'},
-                style_header={'fontWeight': 'bold', 'backgroundColor': '#f1f1f1'},
+                data=[],                  
+                row_selectable='multi',   
+                selected_rows=[],         
+                style_table={
+                    'overflowX': 'auto',
+                    'fontFamily': 'Arial, sans-serif'   # ensure outer table uses same font
+                },
+                style_cell={
+                    'textAlign': 'center',
+                    'padding': '8px',
+                    'fontFamily': 'Arial, sans-serif'   # set cell font
+                },
+                style_header={
+                    'fontWeight': 'bold',
+                    'backgroundColor': '#f1f1f1',
+                    'fontFamily': 'Arial, sans-serif'   # set header font
+                },
                 page_action='none'
             ),
 
@@ -124,6 +140,7 @@ dashboard_page = html.Div([
             'border': '1px solid #ddd',
             'borderRadius': '6px'
         }),
+
     ], style={
         'display': 'flex',
         'alignItems': 'flex-start',
@@ -136,8 +153,10 @@ dashboard_page = html.Div([
 
     # Input controls
     html.Div([
-        html.Label(id='weight-label',
-                   style={'fontWeight': 'bold', 'marginBottom': '8px'}),
+        html.Label(
+            id='weight-label',
+            style={'fontWeight': 'bold', 'marginBottom': '8px'}
+        ),
         dcc.Input(
             id='input-weight',
             type='number',
@@ -188,7 +207,7 @@ dashboard_page = html.Div([
             }
         ),
         id='export-email',
-        href='',          # populated by callback
+        href='',          
         target='_blank',
         style={
             'position': 'fixed',
@@ -215,4 +234,6 @@ layout = html.Div([
     ], style=NAV_STYLE),
 
     html.Div(id='page-content')
-])
+], style={
+    'fontFamily': 'Arial, sans-serif'
+})
